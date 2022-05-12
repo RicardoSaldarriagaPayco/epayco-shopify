@@ -22,7 +22,13 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd
 
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+RUN docker-php-ext-install mysqli pdo pdo_mysql soap
+
+RUN apt-get update && \
+    apt-get install -y libxslt1-dev && \
+    docker-php-ext-install xsl && \
+    apt-get remove -y libxslt1-dev icu-devtools libicu-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure zip --with-libzip && \
     docker-php-ext-install zip
@@ -47,6 +53,11 @@ RUN pecl install -f xdebug apcu \
 
 COPY /php/dev/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
+#install git
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y git
+    
 #install node
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
