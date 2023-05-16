@@ -27,11 +27,22 @@ services:
         environment:
             XDEBUG_CLIENT_HOST: 172.17.0.1
             XDEBUG_CLIENT_PORT: 9001
+            XDEBUG_CONFIG: idekey=PHPSTORM
             PHP_IDE_CONFIG: serverName=www-server'
         links:
             - db
+            #- ioncube
         networks:
             - www-network
+#    ioncube:
+#        image: atsu666/ioncube:7.4
+#        privileged: true
+#        volumes:
+#            - ./www:/var/www/html
+#            - /etc/localtime:/etc/localtime:ro
+#        environment:
+#            - APACHE_DOCUMENT_ROOT=/var/www/html
+
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         links: 

@@ -27,3 +27,5 @@ sudo chown [username]:docker /var/run/docker.sock
 
 get ip on linux
 hostname -I | cut -d ' ' -f1
+
+docker volume prune

@@ -24,17 +24,17 @@ help: ## Show this help message
 
 start: ## Start the containers
 	docker network create www-network || true
-	U_ID=${UID} docker-compose up -d
+	U_ID=${UID} docker compose up -d
 
 stop: ## Stop the containers
-	U_ID=${UID} docker-compose stop
+	U_ID=${UID} docker compose stop
 
 restart: ## Restart the containers
 	$(MAKE) stop && $(MAKE) start
 
 build: ## Rebuilds all the containers
 	docker network create www-network || true
-	U_ID=${UID} docker-compose build
+	U_ID=${UID} docker compose build
 
 prepare: ## Runs backend commands
 	$(MAKE) composer-install
@@ -52,3 +52,5 @@ composer-install: ## Installs composer dependencies
 
 ssh-be: ## bash into the be container
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bash
+
+composer create-project drupal-composer/drupal-project:7.x-dev -n my_drupal

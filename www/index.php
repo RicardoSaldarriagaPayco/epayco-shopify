@@ -10,7 +10,7 @@
         <script
                 src="https://checkout.epayco.co/checkout.js"
                 class="epayco-button"
-                data-epayco-key="c84ad754c728bfb10af2c1c3d1594106"
+                data-epayco-key=""
                 data-epayco-test="false"
                 data-epayco-name="Audífonos REDRAGON H510 ZEUS 2"
                 data-epayco-description="Audífonos REDRAGON H510 ZEUS 2"
@@ -30,6 +30,23 @@
                 data-epayco-mobilephone-billing="+573198754112"
                 data-epayco-button="https://54.166.97.49/wp-content/plugins/Plugin_ePayco_WooCommerce/lib/Boton-color-espanol.png"
                 data-epayco-autoclick="false">
+        </script>
+    </form>
+    <form>
+        <script
+            src="https://checkout.epayco.co/checkout.js"
+            class="epayco-button"
+            data-epayco-key=""
+            data-epayco-amount="50000"
+            data-epayco-name="Vestido Mujer Primavera"
+            data-epayco-description="Vestido Mujer Primavera"
+            data-epayco-currency="cop"
+            data-epayco-country="co"
+            data-epayco-test="true"
+            data-epayco-external="false"
+            data-epayco-response="https://ejemplo.com/respuesta.html"
+            data-epayco-confirmation="https://ejemplo.com/confirmacion"
+            data-epayco-methodconfirmation="get">
         </script>
     </form>
             <?php
