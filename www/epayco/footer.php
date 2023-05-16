@@ -9,7 +9,6 @@
     var AppBridge = window['app-bridge'];
     var AppBridgeUtil = window['app-bridge-utils'];
     var actions = window['app-bridge'].actions;
-    //var createApp = AppBridge.default;
 
     var TitleBar = actions.TitleBar;
     var Button = actions.Button;
@@ -18,7 +17,6 @@
 
     var app = AppBridge.createApp({
         apiKey:'6ce386c42826963b2ca0cb879d0fd258',
-       // shopOrigin: '<?php echo $shopify->get_url(); ?>'
         host: new URLSearchParams(location.search).get("host"),
     });
 
@@ -33,8 +31,6 @@
      var installScriptBtn = Button.create(app, { label: 'Activar ePayco' });
 
         installScriptBtn.subscribe(Button.Action.CLICK, data =>{
-            //exampleModal.dispatch(Modal.Action.OPEN);
-            //redirect.dispatch(Redirect.Action.APP, '/elena/script_tags.php')
             var p_cust_id = document.getElementsByName("p_cust_id")[0].value.replace(/ /g, "");
             if(p_cust_id.length <= 0){
                document.getElementById("p_cust_id").className +=' error'

@@ -2,7 +2,7 @@
 $rawdata = file_get_contents("php://input");
 $decoded = json_decode($rawdata, true);
 
-$responseUrl = urlencode('https://admin.shopify.com/store/epaycotext/apps/epayco-payment/elena/response.php');
+$responseUrl = urlencode('https://admin.shopify.com/store/epaycotext/apps/epayco-payment/epayco/response.php');
 $formattedData = array(
     "notifyUrl" => $responseUrl,
     "returnurl" => $responseUrl,

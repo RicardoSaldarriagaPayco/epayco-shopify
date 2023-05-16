@@ -23,11 +23,7 @@ docker-compose up --build
 docker-compose exec www php -v
 ```
 ```
-docker run --rm -v $(pwd):/app composer:1.10 install
-```
-```
-sobre la ruta donde se encuentra laravel
-docker-compose exec www php artisan key:generate
+docker run --rm -v $(pwd):/app composer:2.20 install
 ```
 agregar al volumen de www. la nueva carpeta con los ajustes de php ./config:/usr/local/etc/php
 Open phpmyadmin at [http://127.0.0.1:8000](http://127.0.0.1:8000)
@@ -39,6 +35,3 @@ Run MySQL client:
 
 - `docker-compose exec db mysql -u root -p` 
 
-Infrastructure as code!
-
-![imagen](https://user-images.githubusercontent.com/7296281/151617771-f1e2e62c-306f-4eb7-bb10-1c448387b9a5.png)
