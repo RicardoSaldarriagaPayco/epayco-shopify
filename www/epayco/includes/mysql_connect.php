@@ -2,7 +2,7 @@
 $server = 'db';
 $username = 'root';
 $password = 'test';
-$database = 'elena';
+$database = 'epayco_shopify';
 
 $mysql = mysqli_connect($server, $username, $password, $database);
 if(!$mysql){

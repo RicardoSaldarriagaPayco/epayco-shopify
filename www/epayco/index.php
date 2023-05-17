@@ -20,7 +20,7 @@ include_once("includes/check_token.php");
  $access_scopes = $shopify->rest_api('/admin/oauth/access_scopes.json', array(), 'GET');
  $response = json_decode($access_scopes['body'], true);
 
-$queryPayment = "SELECT * FROM epayco WHERE shop_url= '". $_GET['shop'] ."' LIMIT 1";
+$queryPayment = "SELECT * FROM shop WHERE shop_url= '". $_GET['shop'] ."' LIMIT 1";
 $result = $mysql->query($queryPayment);
 
 if($result->num_rows > 1){
@@ -107,8 +107,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' ){
             </div>';
         }
     }
-
-
 }
 ?>
 
@@ -126,12 +124,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' ){
     $graphql_test = json_decode($graphql_test['body']);
     //echo $alert;
 ?>
-<script>
-    setTimeout(function(){
-        console.log('cargando')
-        
-    }, 2000);
-</script>
 <article>
     <form action="" method="post" name="epayco_checkout" id="epayco_checkout">
     <section>
@@ -216,4 +208,3 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' ){
     </form>
 </article>
 <?php include_once("footer.php"); ?>
-
