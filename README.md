@@ -8,7 +8,7 @@ I use docker-compose as an orchestrator. To run these containers:
 docker-compose up -d
 ```
 ```
-docker cp docker-lamp_www_1:/usr/local/etc/php ./config
+docker cp docker-www:/usr/local/etc/php ./config
 ```
 ```
 cd config 

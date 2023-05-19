@@ -19,11 +19,12 @@ include_once("includes/check_token.php");
  */
  $access_scopes = $shopify->rest_api('/admin/oauth/access_scopes.json', array(), 'GET');
  $response = json_decode($access_scopes['body'], true);
+ $queryPayment = "SELECT * FROM shop WHERE shop_url= '". $_GET['shop'] ."' LIMIT 1";
+ $result = $mysql->query($queryPayment);
 
-$queryPayment = "SELECT * FROM shop WHERE shop_url= '". $_GET['shop'] ."' LIMIT 1";
-$result = $mysql->query($queryPayment);
+ $resultEpayco = $mysql->query("SELECT * FROM epayco WHERE shop_url= '". $_GET['shop'] ."' LIMIT 1");
 
-if($result->num_rows > 1){
+if($resultEpayco->num_rows > 1){
     $store_data = "no hay datos";
     $p_cust_id = '';
     $public_key = '';
@@ -32,7 +33,7 @@ if($result->num_rows > 1){
     $language_checkout = 'es';
     $checkout_test = 'true';
 }else {
-    $store_data = $result->fetch_assoc();
+    $store_data = $resultEpayco->fetch_assoc();
     $p_cust_id = $store_data["p_cust_id"];
     $public_key = $store_data["public_key"];
     $p_key = $store_data["p_key"];
@@ -41,8 +42,9 @@ if($result->num_rows > 1){
     $checkout_test = $store_data['checkout_test'];
 }
 $alert= '<div></div>';
+
 if($_SERVER['REQUEST_METHOD'] == 'POST' ){
-    if($result->num_rows < 1){
+    if($resultEpayco->num_rows < 1){
         $querySettings = "INSERT INTO epayco (
                     p_cust_id, 
                     public_key, 
@@ -61,20 +63,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' ){
           '".$_GET['shop']."'
            ) ON DUPLICATE KEY UPDATE public_key='".$_POST['public_key']."' ";
 
-        if(!$mysql->query($querySettings)){
-            $alert= '<div class="alert error">
-                      <dl>
-                        <dt>Error Alert</dt>
-                        <dd>Ocurrio un error!</dd>
-                      </dl>
-                    </div>';
-        }else{
-            $alert= '<div class="alert success">
-              <dl>
-                <dt>Success</dt>
-                <dd>Datos guardados!</dd>
-              </dl>
-            </div>';
+        if($mysql->query($querySettings)){
+            $shopify->redirectPaymentOption();
         }
     }else{
         $querySettings = "UPDATE epayco  SET p_cust_id=
@@ -91,39 +81,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' ){
           '".$_POST['language_checkout']."'
             WHERE shop_url ='".$_GET['shop']."' ";
 
-        if(!$mysql->query($querySettings)){
-            $alert= '<div class="alert error">
-                      <dl>
-                        <dt>Error Alert</dt>
-                        <dd>Ocurrio un error!</dd>
-                      </dl>
-                    </div>';
-        }else{
-            $alert= '<div class="alert success">
-              <dl>
-                <dt>Success</dt>
-                <dd>Datos guardados!</dd>
-              </dl>
-            </div>';
+        if($mysql->query($querySettings)){
+            $shopify->redirectPaymentOption();
         }
     }
+
 }
+
 ?>
 
 
 <?php include_once("header.php"); ?>
-<?php
-    $query = array("query" => "{
-        shop {
-            id
-            name
-            email
-        }
-    }");
-    $graphql_test = $shopify->graph_ql($query);
-    $graphql_test = json_decode($graphql_test['body']);
-    //echo $alert;
-?>
+
 <article>
     <form action="" method="post" name="epayco_checkout" id="epayco_checkout">
     <section>
@@ -171,12 +140,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' ){
                 <label><h6>tipo de checkout</h6>
                 </label>
                 <select  name="tipe_checkout" id="tipe_checkout">
-                    <?php if($tipe_checkout == 'one_page'){ ?>
-                    <option value="one_page" selected>One page</option>
-                    <option value="standartd">Standart</option>
+                    <?php if($tipe_checkout == 'onpage'){ ?>
+                    <option value="onpage" selected>Onpage</option>
+                    <option value="standar">Standar</option>
                     <?php }else{?>
-                     <option value="one_page">One page</option>
-                     <option value="standartd" selected>Standart</option>
+                     <option value="onpage">Onpage</option>
+                     <option value="standar" selected>Standar</option>
                     <?php }?>
                 </select>
             </div>

@@ -32,13 +32,8 @@ RUN apt-get update && apt-get install -y \
     && ln -s /usr/bin/python2.7 /usr/bin/python
 
 
-#RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
-    #docker-php-ext-install gd
-
 RUN docker-php-ext-configure gd --with-jpeg && \
     docker-php-ext-install gd
-
-#RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
 
 RUN docker-php-ext-install mysqli pdo pdo_mysql soap zip sockets
 
@@ -48,8 +43,6 @@ RUN apt-get update && \
     apt-get remove -y libxslt1-dev icu-devtools libicu-dev && \
     rm -rf /var/lib/apt/lists/*
 
-#RUN docker-php-ext-configure zip --with-libzip && \
-    #docker-php-ext-install zip
 
 # Install extensions
 RUN docker-php-ext-install mysqli mbstring exif pcntl bcmath zip
@@ -58,25 +51,7 @@ RUN docker-php-source delete
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# ioncube loader
-#RUN curl -fSL 'http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz' -o ioncube.tar.gz \
-#    && mkdir -p ioncube \
-#    && tar -xf ioncube.tar.gz -C ioncube --strip-components=1 \
-#    && rm ioncube.tar.gz \
-#    && mv ioncube/ioncube_loader_lin_7.4.so /var/www/ioncube_loader_lin_7.4.so \
-#    && rm -r ioncube
-#RUN curl -o ioncube.tar.gz https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz \
-#    && tar -xvvzf ioncube.tar.gz \
-#    && mv ioncube/ioncube_loader_lin_8.1.so `php-config --extension-dir` \
-#    && rm -Rf ioncube.tar.gz ioncube \
-#    && docker-php-ext-enable ioncube_loader_lin_8.1
-# Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-#RUN curl -sS https://get.symfony.com/cli/installer | bash
-#RUN mv /root/.symfony/bin/symfony /usr/local/bin/symfony
-#RUN git config --global user.email "user@email.com" \
-   # && git config --global user.name "user name"
 
 RUN pecl install -f xdebug apcu \
     && docker-php-ext-enable xdebug apcu

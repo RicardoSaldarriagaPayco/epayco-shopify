@@ -22,7 +22,6 @@ services:
             - "81:80"
         volumes:
             - ./www:/var/www/html
-            #- ./config:/usr/local/etc/php
             - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
         environment:
             XDEBUG_CLIENT_HOST: 172.17.0.1
@@ -31,17 +30,9 @@ services:
             PHP_IDE_CONFIG: serverName=www-server'
         links:
             - db
-            #- ioncube
+
         networks:
             - www-network
-#    ioncube:
-#        image: atsu666/ioncube:7.4
-#        privileged: true
-#        volumes:
-#            - ./www:/var/www/html
-#            - /etc/localtime:/etc/localtime:ro
-#        environment:
-#            - APACHE_DOCUMENT_ROOT=/var/www/html
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin

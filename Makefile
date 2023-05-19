@@ -52,5 +52,3 @@ composer-install: ## Installs composer dependencies
 
 ssh-be: ## bash into the be container
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bash
-
-composer create-project drupal-composer/drupal-project:7.x-dev -n my_drupal

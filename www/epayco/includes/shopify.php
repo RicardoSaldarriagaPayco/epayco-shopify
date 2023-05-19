@@ -58,8 +58,8 @@ class Shopify {
         }
     }
 
-    public function graph_ql($query = array()){
-        $url = 'https://' . $this->get_url() . '/admin/api/2023-01/graphql.json';
+    public function graph_ql($query = array(), $url = '/admin/api/2023-07/graphql.json' ){
+        $url = 'https://' . $this->get_url() . $url;
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_HEADER, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -93,6 +93,57 @@ class Shopify {
         }
     }
 
+    public function rest_api_activation_payment($api_endpoint, $query = array(), $method = 'POST'){
+        $url = 'https://' .$this->shop_url. $api_endpoint;
+        $userAgent = $_SERVER['HTTP_USER_AGENT'];
+
+        $content = json_encode($query);
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_USERAGENT, $userAgent);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER,
+            array(
+                "Content-type: application/json",
+                "X-Shopify-Access-Token:".$this->access_token
+            ));
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+        $json_response = curl_exec($curl);
+        $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+        return array( 'body' => $json_response);
+    }
+
+    public function redirectPaymentOption(){
+        $mutations = array("query"=>'
+        mutation  {
+          paymentsAppConfigure(ready:true, externalHandle:"ePayco") {
+            paymentsAppConfiguration {
+             externalHandle
+              ready
+            }
+            userErrors {
+              field
+              message
+            }
+          }
+        }');
+        $this->rest_api_activation_payment("/payments_apps/api/2023-07/graphql.json", $mutations, 'POST');
+        $redirectUrl = "https://".$this->shop_url."/services/payments_partners/gateways/6ce386c42826963b2ca0cb879d0fd258/settings";
+        echo '<div class="alert success">
+                  <dl>
+                    <dt>Success</dt>
+                    <dd>Datos guardados!</dd>
+                  </dl>
+                </div>';
+        echo "<script>
+                setTimeout(function (){
+                    let url = '".$redirectUrl."';
+                    top.window.location= url
+                },3000)
+                </script>";
+    }
 
 
 
