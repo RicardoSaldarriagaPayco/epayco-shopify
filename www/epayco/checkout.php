@@ -2,13 +2,13 @@
 $rawdata = file_get_contents("php://input");
 $decoded = json_decode($rawdata, true);
 
-$responseUrl = urlencode('https://admin.shopify.com/store/epaycotext/apps/epayco-payment/epayco/response.php');
+$responseUrl = urlencode(getenv("store_admin_url"));
 $formattedData = array(
     "notifyUrl" => $responseUrl,
     "returnurl" => $responseUrl,
     "amount" => $decoded["amount"],
     "currency" =>   in_array($decoded["currency"],array('USD,COP')) ? $decoded["currency"]: 'USD',
-    "public_key" => 'c84ad754c728bfb10af2c1c3d1594106',
+    "public_key" => getenv("public_key"),
     "subTotal" =>  $decoded["amount"],
     "tax" => 0,
     "transactionId" =>$decoded["id"],
@@ -24,5 +24,5 @@ $formattedData = array(
     "ico" => 0
 );
     $queryParams = http_build_query($formattedData);
-    $redirectUrl = array("redirect_url"=> 'https://cms.epayco.co/omnipay/checkout/payment' . "?" . $queryParams);
+    $redirectUrl = array("redirect_url"=> getenv("redirect_checkout_url") . "?" . $queryParams);
     echo json_encode($redirectUrl);

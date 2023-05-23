@@ -130,7 +130,7 @@ class Shopify {
           }
         }');
         $this->rest_api_activation_payment("/payments_apps/api/2023-07/graphql.json", $mutations, 'POST');
-        $redirectUrl = "https://".$this->shop_url."/services/payments_partners/gateways/6ce386c42826963b2ca0cb879d0fd258/settings";
+        $redirectUrl = "https://".$this->shop_url."/services/payments_partners/gateways/".getenv("api_key")."/settings";
         echo '<div class="alert success">
                   <dl>
                     <dt>Success</dt>
@@ -144,8 +144,5 @@ class Shopify {
                 },3000)
                 </script>";
     }
-
-
-
 
 }

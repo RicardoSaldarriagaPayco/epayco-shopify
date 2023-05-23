@@ -3,7 +3,7 @@
 $token = $_POST['token'];
 $token_array = explode('.', $token);
 $assoc_token = array_combine(['header', 'payload', 'signature'], $token_array);
-$secret_key = '0218631e42dfa8c49db8aeb1757107ab';
+$secret_key = getenv("secret_key");
 $hash_token = hash_hmac('sha256', $assoc_token['header'] . '.' . $assoc_token['payload'], $secret_key, true);
 $hash_token = rtrim(strtr(base64_encode($hash_token), '+/', '-_'), '=');
 $response = array(

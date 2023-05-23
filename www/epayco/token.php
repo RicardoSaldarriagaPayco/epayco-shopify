@@ -1,7 +1,7 @@
 <?php
 include_once("includes/mysql_connect.php");
-$api_key = '6ce386c42826963b2ca0cb879d0fd258';
-$secret_key = '0218631e42dfa8c49db8aeb1757107ab';
+$api_key = getenv("api_key");
+$secret_key = getenv("secret_key");
 $parameters = $_GET;
 
 $shop_url = $parameters['shop'];

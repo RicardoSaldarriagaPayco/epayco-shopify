@@ -1,8 +1,9 @@
 <?php
-$server = 'db';
-$username = 'root';
-$password = 'test';
-$database = 'epayco_shopify';
+include_once("app.php");
+$server = getenv("DB_SERVER");
+$username = getenv("DB_USERNAME");
+$password = getenv("DB_PASSWORD");
+$database = getenv("DB_NAME");
 
 $mysql = mysqli_connect($server, $username, $password, $database);
 if(!$mysql){
