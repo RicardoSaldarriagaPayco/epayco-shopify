@@ -1,0 +1,69 @@
+api_version = "2023-10"
+
+[[extensions]]
+name = "mis pagos"
+type = "payments_extension"
+handle = "mis-pagos"
+payment_session_url = "https://shop.epayco.io/checkout.php"
+refund_session_url = "https://shop.epayco.io/checkout.php"
+capture_session_url = "https://shop.epayco.io/checkout.php"
+multiple_capture = false
+merchant_label = "payco"
+supported_countries = [
+  "AR",
+  "BO",
+  "BR",
+  "BQ",
+  "CL",
+  "CO",
+  "EC",
+  "FK",
+  "GF",
+  "GY",
+  "PY",
+  "PE",
+  "SR",
+  "UY",
+  "VE",
+  "AI",
+  "AG",
+  "AW",
+  "BS",
+  "BB",
+  "BZ",
+  "BM",
+  "KY",
+  "CR",
+  "CW",
+  "DM",
+  "DO",
+  "SV",
+  "GD",
+  "GT",
+  "HT",
+  "HN",
+  "JM",
+  "MQ",
+  "MS",
+  "NI",
+  "PA",
+  "BL",
+  "KN",
+  "LC",
+  "MF",
+  "PM",
+  "SX",
+  "VC",
+  "TT",
+  "TC",
+  "VG"
+]
+supported_payment_methods = [ "visa", "master", "maestro" ]
+test_mode_available = true
+supports_oversell_protection = false
+supports_3ds = true
+supports_deferred_payments = true
+supports_installments = true
+
+  [[extensions.targeting]]
+  target = "payments.offsite.render"

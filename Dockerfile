@@ -43,6 +43,8 @@ RUN apt-get update && \
     apt-get remove -y libxslt1-dev icu-devtools libicu-dev && \
     rm -rf /var/lib/apt/lists/*
 
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
+RUN install-php-extensions redis
 
 # Install extensions
 RUN docker-php-ext-install mysqli mbstring exif pcntl bcmath zip
@@ -51,26 +53,21 @@ RUN docker-php-source delete
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-RUN pecl install -f xdebug apcu \
-    && docker-php-ext-enable xdebug apcu
-
+RUN pecl install xdebug && docker-php-ext-enable xdebug
 COPY /php/dev/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 COPY config/php.ini /usr/local/etc/php/
 
-#install git
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y git
-    
-#install node
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get install -y nodejs
-#install yarn
-RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt update && apt install yarn
+COPY www/epayco /var/www/html
+
+COPY docker/ShopifyIntermediateCertificate.crt /etc/ssl/certs/ShopifyIntermediateCertificate.crt
+COPY docker/ShopifyNewPaymentsPlatformRoot.crt /etc/ssl/certs/ShopifyNewPaymentsPlatformRoot.crt
+COPY docker/ShopifyPaymentsPlatformRoot.crt /etc/ssl/certs/ShopifyPaymentsPlatformRoot.crt
+COPY docker/ShopifySecondaryProduction.crt /etc/ssl/certs/ShopifySecondaryProduction.crt
+
+COPY docker/etc/apache2/sites-enabled/000-default.conf /etc/apache2/sites-enabled/000-default.conf
+COPY docker/etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+
+
 WORKDIR /var/www/html
-RUN a2enmod rewrite
+RUN a2enmod headers rewrite

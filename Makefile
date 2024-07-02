@@ -39,6 +39,12 @@ build: ## Rebuilds all the containers
 prepare: ## Runs backend commands
 	$(MAKE) composer-install
 
+delete: ## eliminar contenedor
+	U_ID=${UID} docker compose stop $(docker ps -q)
+	U_ID=${UID} docker compose stop $(docker ps -aq)
+	U_ID=${UID} docker compose rm $(docker ps -aq)
+##U_ID=${UID} docker compose rmi $(docker images -a -q)
+
 run: ## starts the test development server in detached mode
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} test serve -d
 
@@ -52,3 +58,11 @@ composer-install: ## Installs composer dependencies
 
 ssh-be: ## bash into the be container
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bash
+
+# docker stop $(docker ps -q)
+
+# docker stop $(docker ps -aq)
+# docker rm $(docker ps -aq)
+
+
+#docker rmi $(docker images -a -q)

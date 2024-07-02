@@ -1,20 +1,5 @@
 version: "3.1"
 services:
-    db:
-        image: mysql
-        ports: 
-            - "3307:3306"
-        command: --default-authentication-plugin=mysql_native_password
-        environment:
-            MYSQL_DATABASE: dbname
-            MYSQL_PASSWORD: test
-            MYSQL_ROOT_PASSWORD: test 
-        volumes:
-            - ./dump:/docker-entrypoint-initdb.d
-            - ./conf:/etc/mysql/conf.d
-            - persistent:/var/lib/mysql
-        networks:
-            - www-network
     www:
         build: .
         container_name: www
@@ -23,31 +8,27 @@ services:
         volumes:
             - ./www:/var/www/html
             - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+        depends_on:
+            - redis
         environment:
             XDEBUG_CLIENT_HOST: 172.17.0.1
             XDEBUG_CLIENT_PORT: 9001
             XDEBUG_CONFIG: idekey=PHPSTORM
-            PHP_IDE_CONFIG: serverName=www-server'
-        links:
-            - db
-
+            PHP_IDE_CONFIG: serverName=www-server
         networks:
             - www-network
 
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        links: 
-            - db:db
+    redis:
+        image: redis:6.2
+        container_name: app_redis
         ports:
-            - 8001:80
-        environment:
-            MYSQL_USER: root
-            MYSQL_PASSWORD: test
-            MYSQL_ROOT_PASSWORD: test
+            - "6379:6379"
         networks:
             - www-network
+
 volumes:
     persistent: {}
 
 networks:
     www-network:
+        driver: "bridge"

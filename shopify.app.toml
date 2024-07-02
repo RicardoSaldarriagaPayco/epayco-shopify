@@ -1,0 +1,28 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "11ec2bbbd5bb9b2b62749b20cc8d675e"
+name = "payco"
+handle = "payco-1"
+application_url = "https://shop.epayco.io/"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "customerpayco.myshopify.com"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_payment_gateways,write_payment_sessions"
+
+[auth]
+redirect_urls = [
+  "https://shop.epayco.io/token.php",
+  "https://shop.epayco.io/install.php",
+  "https://shop.epayco.io/response.php"
+]
+
+[webhooks]
+api_version = "2023-10"
+
+[pos]
+embedded = true
